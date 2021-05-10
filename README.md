@@ -9,7 +9,7 @@ Technologies:
 - AWS Lightsail
 - AWS DynamoDB
 
-Live Website (as of 5/10/2021): http://107.22.52.131/
+Live Website (as of 5/10/2021): http://107.22.52.131/	(Hosted on 5$ Lightsail instance so please be kind)
 
 ## Description
 The popular video game Path Of Exile is an ARPG developed by Grinding Gear Games (GGG) and released in 2013. It has a trading system and in-game currency. Because of this a large user-driven economy has flourished.
@@ -34,3 +34,11 @@ Access `localhost:8080` to interact with the website.
 ### Deploy to AWS
 Uses the [shared credential file](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html). Configure it with an IAM account that has full access to DynamoDB.
 DynamoDB needs a table `poe-gearset-users`.
+
+## Quirks / TODO
+- Internal database isn't completely up to date. Use lur-cache to keep most recent 50k items
+- No way to search for life / other affixes as well.
+- 2 Ring Bug
+- Switch to Vuex, it's gross right now
+- No user accounts, just strip that functionality out.
+- What if someone declines your trade? Maybe make a way to "lock" items that you've already purchased so you can do a new search.

@@ -1,29 +1,36 @@
-[![Work in Repl.it](https://classroom.github.com/assets/work-in-replit-14baed9a392b3a25080506f3b7b6d57f295ec2978f6f33ec97e36a161684cbe9.svg)](https://classroom.github.com/online_ide?assignment_repo_id=393348&assignment_repo_type=GroupAssignmentRepo)
-# Final Project
+# PoE Gearset Searcher
+team: oof
+members: Evan Hruskar
 
-## Due Friday, May 7, 2021
+Technologies:
+- Vue
+- NodeJS
+- Typescript
+- AWS Lightsail
+- AWS DynamoDB
 
-### Build a web app in a team of 5-6
+Live Website (as of 5/10/2021): http://107.22.52.131/
 
-### Requirements:
-* Must have user accounts and different user roles
-* Must use a database
-* Must have interactive UI
-* Must use a library or framework not discussed/used in class
-* Must use an outside REST API in some way
-* Must deploy your application in some publicly accessible way (Heroku, Digital Ocean, AWS, etc)
+## Description
+The popular video game Path Of Exile is an ARPG developed by Grinding Gear Games (GGG) and released in 2013. It has a trading system and in-game currency. Because of this a large user-driven economy has flourished.
 
-### Instructions
-Build your team and write a document describing your application to me by Wed, March 31, 2021. I will approve your web application idea. In your paper, include:
-* the name of your application
-* name and roles of all your team members
-* its functionality
-* user story/use case
-* technical design 
-* tools/libraries/frameworks you will use
+The primary way most users interact with this economy is through the official trading platform [pathofexile.com/trade](https://www.pathofexile.com/trade/search/Ultimatum). There are other community trade sites as well like [poe.ninja](https://poe.ninja/) and [poe.trade](https://poe.trade/). One commonality between all of these sites is that they only allow you to search for a single item at a time.
 
-### Final deliverable:
-* Codebase in Github Repo
-* README describing your project, with all of the information outlined above (team members, application name, description, etc). You will also include detailed instructions of how to install and run your application, and what API keys, databases, etc are needed to run your application. You will also provide a link to a live demo of your application.
-* Final Presentation and Demo
-  * You will prepare a 5 minute presentation and demo of your application in class during during a zoom call with me (during finals week)
+A requirement for endgame PoE is that your character's elemental resistances are capped at 75% for Fire, Cold, and Lightning. Every gear slot (Helmet, Body Armour, Boots, etc...) can potentially have resistances on it, but all that we require is that the total sum is 75% at the end. It’s impossible to query for multiple pieces of gear at the same time with any of these trade sites. I wanted to make a website which addressed this.
+
+In the process of building this, what I discovered is that doing a query like this and optimizing for the lowest cost is an NP-Complete problem. We're trying to minimize the total cost of our gear while we're subject to the following constraints
+1. We meet or exceed every resist target (fire, cold, lightning, chaos)
+2. Each gear slot can only have one item in it.
+
+While these contraints sound simple enough, it actually makes a pretty complicated problem to solve efficiently. The problem it has the most similarity to is the [Cutting Stock Problem](https://en.wikipedia.org/wiki/Cutting_stock_problem). Essentially, they're trying to minimize waste while subject to the constraint that they meet some "quota" of stock cuts. However, it doesn't have an additional constrant like "each stock cut can only be done once" and in the cutting stock problem, there aren't hundreds of thousands of different cuts.
+
+This is the part of the program I spent the longest time on, but I eventually learned about numerical methods which can efficiently solve some NP-Complete problems. It's called [linear programming](https://en.wikipedia.org/wiki/Linear_programming). I was able to formulate this gearset optimization problem as a linear problem and then used an LP solver to get reasonably fast solutions. I have the tolerance configured to 10%, so no matter what result it gives back, know that it's within 10% of the global minimum.
+
+### Run Dev Build
+`yarn server` in server/  (Restart this once it populates the internal store of stash tabs -- otherwise solver may be weird)
+`yarn serve` in client/   (`localhost:8080` -- will proxy API requests to `localhost:3000`)
+Access `localhost:8080` to interact with the website.
+
+### Deploy to AWS
+Uses the [shared credential file](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-shared.html). Configure it with an IAM account that has full access to DynamoDB.
+DynamoDB needs a table `poe-gearset-users`.

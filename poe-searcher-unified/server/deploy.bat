@@ -31,3 +31,6 @@ scp -r -i %public_key% .\src\database.ts bitnami@%server_ip%:/home/bitnami/proje
 @REM tsc
 @REM node out/server.js
 @REM Also, I have the shared credential file configured on the instance.
+
+@REM Use forever to daemonize it
+@REM https://docs.bitnami.com/aws/infrastructure/nodejs/get-started/get-started/

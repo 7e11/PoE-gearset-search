@@ -1,9 +1,8 @@
 # PoE Gearset Searcher
-team: oof
-members: Evan Hruskar
-
 ![screenshot](./screenshot.png)
 
+team: oof
+members: Evan Hruskar
 
 Technologies:
 - Vue
@@ -13,6 +12,11 @@ Technologies:
 - AWS DynamoDB
 
 Live Website (as of 5/10/2021): http://107.22.52.131/	(Hosted on 5$ Lightsail instance so please be kind)
+
+## Usage
+Put in your desired resistances and then select the gearslots you'd like to search for.
+
+For people unfamiliar with the game who want to try out the functionality, try selecting 4-5 gear slots and put in the resistances 135 fire/cold/lightning and 60 chaos, as this is a standard resistance goal.
 
 ## Description
 The popular video game Path Of Exile is an ARPG developed by Grinding Gear Games (GGG) and released in 2013. It has a trading system and in-game currency. Because of this a large user-driven economy has flourished.
@@ -41,7 +45,7 @@ DynamoDB needs a table `poe-gearset-users`.
 ## Quirks / TODO
 - Internal database isn't completely up to date. Use lur-cache to keep most recent 50k items
 - No way to search for life / other affixes as well.
-- 2 Ring Bug
+- 2 Ring Bug, can't tell the solver not to use the same ring twice.
 - Switch to Vuex, it's gross right now
 - No user accounts, just strip that functionality out.
 - What if someone declines your trade? Maybe make a way to "lock" items that you've already purchased so you can do a new search.

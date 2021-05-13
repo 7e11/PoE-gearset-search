@@ -2,6 +2,9 @@
 team: oof
 members: Evan Hruskar
 
+[screenshot](./screenshot.png)
+
+
 Technologies:
 - Vue
 - NodeJS

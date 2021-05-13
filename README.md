@@ -2,7 +2,7 @@
 team: oof
 members: Evan Hruskar
 
-[screenshot](./screenshot.png)
+![screenshot](./screenshot.png)
 
 
 Technologies:
